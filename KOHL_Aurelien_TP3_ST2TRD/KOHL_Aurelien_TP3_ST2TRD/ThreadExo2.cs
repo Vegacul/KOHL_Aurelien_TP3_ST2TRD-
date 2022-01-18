@@ -19,11 +19,6 @@ namespace KOHL_Aurelien_TP3_ST2TRD
             Thread myThread3;
 
 
-            // Instanciation du thread, on spécifie dans le 
-            // délégué ThreadStart le nom de la méthode qui
-            // sera exécutée lorsque l'on appelle la méthode
-            // Start() de notre thread.
-
             myThread1 = new Thread((o => GLobalThread(10000, 50, ' ')));
             myThread2 = new Thread((w => GLobalThread(11000, 40, '*')));
             myThread3 = new Thread((y => GLobalThread(9000, 20, '°')));
