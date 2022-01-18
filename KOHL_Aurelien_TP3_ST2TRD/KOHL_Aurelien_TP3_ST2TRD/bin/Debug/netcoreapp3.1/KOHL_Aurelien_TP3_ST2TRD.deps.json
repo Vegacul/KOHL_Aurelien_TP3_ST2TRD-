@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "KOHL_Aurelien_TP3_ST2TRD/1.0.0": {
+        "runtime": {
+          "KOHL_Aurelien_TP3_ST2TRD.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "KOHL_Aurelien_TP3_ST2TRD/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
