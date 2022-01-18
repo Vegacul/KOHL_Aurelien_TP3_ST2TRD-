@@ -11,7 +11,7 @@ namespace KOHL_Aurelien_TP3_ST2TRD
         static void Main(string[] args)
         {
             var MovieList = new MovieCollection().Movies;
-            exo2();
+            Before1980Movie();
 
         }
 
@@ -183,9 +183,7 @@ namespace KOHL_Aurelien_TP3_ST2TRD
             var MovieList = new MovieCollection().Movies;
 
             var query = MovieList
-                        .OrderBy(c => c.ReleaseDate);
-
-
+                        .Count(c => c.ReleaseDate.Year < 1980);
 
             Console.WriteLine($"{query}");
 
