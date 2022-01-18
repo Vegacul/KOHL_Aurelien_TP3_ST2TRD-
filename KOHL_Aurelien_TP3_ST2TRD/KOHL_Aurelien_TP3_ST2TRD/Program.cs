@@ -10,8 +10,8 @@ namespace KOHL_Aurelien_TP3_ST2TRD
     {
         static void Main(string[] args)
         {
-            var MovieList = new MovieCollection().Movies;
-            Before1980Movie();
+            
+            MeanBudgetBoxOfficeMovieByYEar();
 
         }
 
@@ -206,17 +206,57 @@ namespace KOHL_Aurelien_TP3_ST2TRD
         {
             var MovieList = new MovieCollection().Movies;
 
-            var query = (from Movie in MovieList
-                         select Movie);
+            var query = MovieList
+                        .Where(c => (c.Title.Contains("h") || c.Title.Contains("w")) & (c.Title.Contains("i") == false & c.Title.Contains("t") == false)) ;
 
-            var query3 = query.Count(c => c.Title.Contains('h') || c.Title.Contains('w'));
-
-
-            Console.WriteLine($"{query3}");
+           foreach (var item in query)
+            {
+                Console.WriteLine($"{item.Title}");
+            }
 
         }
 
 
+        public static void MeanBudgetBoxOfficeMovie()
+        {
+            var MovieList = new MovieCollection().Movies;
+
+            var query = MovieList
+                        .Average(x => x.Budget/ x.BoxOffice);
+
+            Console.Write($"{ query}\n ");
+
+        }
+
+
+        public static void CharMovie()
+        {
+            var MovieList = new MovieCollection().Movies;
+
+            var query = MovieList
+                        .GroupBy(c => c.Title.Length);
+
+
+
+            foreach (var movie in query)
+            {
+                Console.Write($"{movie }\n ");
+            }
+        }
+
+        public static void MeanBudgetBoxOfficeMovieByYEar()
+        {
+            var MovieList = new MovieCollection().Movies;
+
+
+            var result =
+               from p in MovieList
+               group p by p.ReleaseDate into g
+               select new { Category = g.Key, AveragePrice = g.Average(p => p.Budget/p.BoxOffice) };
+
+            Console.Write(result+ "\n");
+
+        }
 
     }
 }
