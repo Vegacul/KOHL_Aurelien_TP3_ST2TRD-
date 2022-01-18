@@ -182,14 +182,15 @@ namespace KOHL_Aurelien_TP3_ST2TRD
         {
             var MovieList = new MovieCollection().Movies;
 
-            var query = MovieList
-                        .GroupBy(c => c.Title.Length);
 
+            var result =
+                       from p in MovieList
+                       group p by p.Title.Length into g
+                       select new { NBChar = g.Key, COunt = g.Count()};
 
-
-            foreach (var movie in query)
+            foreach (var movie in result)
             {
-                Console.Write($"{movie }\n ");
+                Console.Write($"{movie.NBChar } CHAR => {movie.COunt } FILMS\n ");
             }
         }
 
@@ -200,10 +201,13 @@ namespace KOHL_Aurelien_TP3_ST2TRD
 
             var result =
                from p in MovieList
-               group p by p.ReleaseDate into g
-               select new { Category = g.Key, AveragePrice = g.Average(p => p.Budget / p.BoxOffice) };
-
-            Console.Write(result + "\n");
+               group p by p.ReleaseDate.Year into g
+               select new { YEAR = g.Key, AverageRev = g.Average(p => p.Budget / p.BoxOffice) };
+            
+            foreach (var movie in result)
+            {
+                Console.Write($"{movie.YEAR }  => {movie.AverageRev } \n ");
+            }
 
         }
     }
