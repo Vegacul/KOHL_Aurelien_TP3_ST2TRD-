@@ -8,255 +8,108 @@ namespace KOHL_Aurelien_TP3_ST2TRD
 {
     class Program
     {
+        private static int AskUserForParameter()
+        {
+            int.TryParse(Console.ReadLine(), out var result);
+            return result;
+        }
+
         static void Main(string[] args)
         {
-            
-            MeanBudgetBoxOfficeMovieByYEar();
 
-        }
-
-        private static Mutex mut = new Mutex();
-
-        public static void exo2()
-        {
-            // Déclaration du thread
-            Thread myThread1;
-            Thread myThread2;
-            Thread myThread3;
-           
-
-            // Instanciation du thread, on spécifie dans le 
-            // délégué ThreadStart le nom de la méthode qui
-            // sera exécutée lorsque l'on appelle la méthode
-            // Start() de notre thread.
-
-            myThread1 = new Thread((o=> GLobalThread(10000,50,' ')));
-            myThread2 = new Thread((w=> GLobalThread(11000, 40, '*')));
-            myThread3 = new Thread((y=> GLobalThread(9000, 20, '°')));
-
-            
-            // Lancement du thread
-            myThread1.Start();
-            myThread2.Start();
-            myThread3.Start();
-
-            myThread1.Join();
-            myThread2.Join();
-            myThread3.Join();
-
-        }
-
-        public static void GLobalThread(int duree, int freq, char caractere )
-        {
-            
-            for (int i = 0; i < (duree/freq); i++)
+            int choice;
+            do
             {
-                mut.WaitOne();
-                Console.Write(caractere);
-                mut.ReleaseMutex();
-                Thread.Sleep(freq);
-            }
-            
+                Console.Write(getMainMenu());
+                choice = AskUserForParameter();
+                Console.WriteLine("\n");
+                string result = computeMainMenuChoice(choice);
+                Console.WriteLine(result);
+            } while (choice != 16);
+            Console.ReadLine();
         }
 
-
-        public static void ListMovie()
+        public static string getMainMenu()
         {
-            var MovieList = new MovieCollection().Movies;
-            foreach (var Movie in MovieList)
+
+            return "\n************ Menu ************\n "
+                + " Exercise 1 :\n"
+                    + " 1: Display the title of the oldest movie \n"
+                    + " 2: Count all movies \n"
+                    + " 3: Count all movies with the letter e. at least once in the title. \n"
+                    + " 4: Count how many time the letter f is in all the titles from this list. \n"
+                    + " 5: Display the title of the film with the higher budget \n"
+                    + " 6: Display the title of the movie with the lowest box office \n"
+                    + " 7: Order the movies by reversed alphabetical order and print the first 11 of the list \n"
+                    + " 8: Count all the movies made before 1980 \n"
+                    + " 9: Display the average running time of movies having a vowel as the first letter \n"
+                    + " 10: Print all movies with the letter H or W in the title, but not the letter I or T \n"
+                    + " 11: Calculate the mean of all Budget / Box Office of every movie ever \n"
+                    + " 12: Group all films by the number of characters in the title screen and print the count of movies by letter in the film \n"
+                    + " 13: Calculate the mean of all Budget / Box Office of every movie grouped by yearly release date \n"
+                    + " 14: Exercice 2 : Thread étoilé\n"
+                    + " 15: MOURIR et coder en Python car c'est mieux\n"
+                    + "\n Whats is your choice ? :\n ";
+        }
+
+        public static string computeMainMenuChoice(int choice)
+        {
+            string result = " ";
+
+            switch (choice)
             {
-                Console.Write($"{Movie.Title }\n ");
+                case 1:
+                    QueryExo1.OldestMovie();
+                    break;
+                case 2:
+                    QueryExo1.CountMovie();
+                    break;
+                case 3:
+                    QueryExo1.EMovie();
+                    break;
+                case 4:
+                    QueryExo1.FInMovie();
+                    break;
+                case 5:
+                    QueryExo1.HigherBudgestMovie();
+                    break;
+                case 6:
+                    QueryExo1.LowestBoxtMovie();
+                    break;
+                case 7:
+                    QueryExo1.ReversMovie();
+                    break;
+                case 8:
+                    QueryExo1.Before1980Movie();
+                    break;
+                case 9:
+                    QueryExo1.TimeVowelMovie();
+                    break;
+                case 10:
+                    QueryExo1.HWMovie();
+                    break;
+                case 11:
+                    QueryExo1.MeanBudgetBoxOfficeMovie();
+                    break;
+                case 12:
+                    QueryExo1.CharMovie();
+                    break;
+                case 13:
+                    QueryExo1.MeanBudgetBoxOfficeMovieByYEar();
+                    break;
+                case 14:
+                    ThreadExo2.exo2();
+                    break;
+                case 15:
+                    result += "\nC'est un bon choix mais malheuresement il est en rupture de stock, sorry";
+                    break;
+                default:
+                    result += "\nBad choice, try again";
+                    break;
             }
-
-
+            return result;
         }
 
-        public static void OldestMovie()
-        {
-            var MovieList = new MovieCollection().Movies;
-
-            var query = MovieList
-                        .OrderBy(c => c.ReleaseDate)
-                        .First()
-                        .Title;
-
-            Console.WriteLine($"{query}");
-
-        }
-
-        public static void CountMovie()
-        {
-            var MovieList = new MovieCollection().Movies;
-
-            var query = MovieList
-                        .Count();
-
-            Console.WriteLine($"{query}");
-
-        }
-
-        public static void EMovie()
-        {
-            var MovieList = new MovieCollection().Movies;
-
-            var query = (from Movie in MovieList
-                         select Movie);
-            var query3 = query .Count(c => c.Title.Contains('e'));
-
-
-            Console.WriteLine($"{query3}");
-
-        }
-
-        public static void FInMovie()
-        {
-            var MovieList = new MovieCollection().Movies;
-
-            var query = (from Movie in MovieList
-                         where Movie.Title.Contains('f')
-                         select Movie.Title);
-            int total = 0;
-
-            foreach (var title in query)
-            {
-                int count = 0;
-                foreach (char c in title)
-                {
-                    if (c == 'f')
-                    {
-                        count++;
-                    }
-                }
-                total = total + count;
-            }
-
-
-            Console.WriteLine(total);
-
-
-        }
-
-        public static void HigherBudgestMovie()
-        {
-            var MovieList = new MovieCollection().Movies;
-
-            var query = MovieList
-                        .OrderBy(c => c.Budget)
-                        .Last()
-                        .Title;
-
-            Console.WriteLine($"{query}");
-
-        }
-
-        public static void LowestBoxtMovie()
-        {
-            var MovieList = new MovieCollection().Movies;
-
-            var query = MovieList
-                        .OrderBy(c => c.BoxOffice)
-                        .First()
-                        .Title;
-
-            Console.WriteLine($"{query}");
-
-        }
-
-        public static void ReversMovie()
-        {
-            var MovieList = new MovieCollection().Movies;
-
-            var query = MovieList
-                        .OrderBy(c => c.Title)
-                        .Reverse()
-                        .Take(11);
-
-            foreach (var Movie in query)
-            {
-                Console.Write($"{Movie.Title }\n ");
-            }
-
-        }
-
-        public static void Before1980Movie()
-        {
-            var MovieList = new MovieCollection().Movies;
-
-            var query = MovieList
-                        .Count(c => c.ReleaseDate.Year < 1980);
-
-            Console.WriteLine($"{query}");
-
-        }
-
-        public static void TimeVowelMovie()
-        {
-            var MovieList = new MovieCollection().Movies;
-
-            var query = MovieList
-                        .Where(c => c.Title.StartsWith("A") || c.Title.StartsWith("E") || c.Title.StartsWith("I") || c.Title.StartsWith("O") || c.Title.StartsWith("U") || c.Title.StartsWith("Y"))
-                        .Average(x => x.RunningTime);
-
-            Console.Write($"{ query}\n ");
-
-        }
-
-
-        public static void HWMovie()
-        {
-            var MovieList = new MovieCollection().Movies;
-
-            var query = MovieList
-                        .Where(c => (c.Title.Contains("h") || c.Title.Contains("w")) & (c.Title.Contains("i") == false & c.Title.Contains("t") == false)) ;
-
-           foreach (var item in query)
-            {
-                Console.WriteLine($"{item.Title}");
-            }
-
-        }
-
-
-        public static void MeanBudgetBoxOfficeMovie()
-        {
-            var MovieList = new MovieCollection().Movies;
-
-            var query = MovieList
-                        .Average(x => x.Budget/ x.BoxOffice);
-
-            Console.Write($"{ query}\n ");
-
-        }
-
-
-        public static void CharMovie()
-        {
-            var MovieList = new MovieCollection().Movies;
-
-            var query = MovieList
-                        .GroupBy(c => c.Title.Length);
-
-
-
-            foreach (var movie in query)
-            {
-                Console.Write($"{movie }\n ");
-            }
-        }
-
-        public static void MeanBudgetBoxOfficeMovieByYEar()
-        {
-            var MovieList = new MovieCollection().Movies;
-
-
-            var result =
-               from p in MovieList
-               group p by p.ReleaseDate into g
-               select new { Category = g.Key, AveragePrice = g.Average(p => p.Budget/p.BoxOffice) };
-
-            Console.Write(result+ "\n");
-
-        }
 
     }
 }
