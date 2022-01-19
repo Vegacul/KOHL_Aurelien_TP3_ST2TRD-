@@ -19,12 +19,14 @@ namespace KOHL_Aurelien_TP3_ST2TRD
             Thread myThread3;
 
 
-            myThread1 = new Thread((o => GLobalThread(10000, 50, ' ')));
-            myThread2 = new Thread((w => GLobalThread(11000, 40, '*')));
-            myThread3 = new Thread((y => GLobalThread(9000, 20, '°')));
+            myThread1 = new Thread((o => GLobalThread(10, 50, ' ')));
+            myThread2 = new Thread((w => GLobalThread(11, 40, '*')));
+            myThread3 = new Thread((y => GLobalThread(9, 20, '°')));
 
 
             // Lancement du thread
+            
+
             myThread1.Start();
             myThread2.Start();
             myThread3.Start();
@@ -33,19 +35,24 @@ namespace KOHL_Aurelien_TP3_ST2TRD
             myThread2.Join();
             myThread3.Join();
 
+
         }
 
         public static void GLobalThread(int duree, int freq, char caractere)
         {
+            DateTime date2 = DateTime.Now.AddSeconds(duree);
 
-            for (int i = 0; i < (duree / freq); i++)
+
+            while (DateTime.Now <= date2)
             {
                 mut.WaitOne();
                 Console.Write(caractere);
+
                 mut.ReleaseMutex();
                 Thread.Sleep(freq);
-            }
 
+            }
+            //Console.Write("fin");
         }
 
 
