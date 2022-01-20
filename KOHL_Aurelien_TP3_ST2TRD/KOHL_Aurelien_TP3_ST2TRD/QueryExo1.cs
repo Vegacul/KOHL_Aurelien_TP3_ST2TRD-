@@ -156,7 +156,7 @@ namespace KOHL_Aurelien_TP3_ST2TRD
             var MovieList = new MovieCollection().Movies;
 
             var query = MovieList
-                        .Where(c => (c.Title.Contains("h") || c.Title.Contains("w")) & (c.Title.Contains("i") == false & c.Title.Contains("t") == false));
+                        .Where(c => (c.Title.Contains("h") || c.Title.Contains("w")) & (c.Title.Contains("i") == false || c.Title.Contains("t") == false));
 
             foreach (var item in query)
             {
